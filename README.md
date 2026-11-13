@@ -87,20 +87,12 @@ php artisan migrate --seed
 php artisan serve --port=9193
 ```
 
-打开 <http://localhost:9193/> 即为会员端，<http://localhost:9193/admin_manage_6789> 为管理后台。
+打开 <http://localhost:9193/> 即为会员端。
 
 需要造一批演示数据（会员 / 任务 / 收益）时：
 
 ```bash
 php artisan db:seed --class=DemoSeeder
-```
-
-### 默认管理员账号
-
-```
-地址：/admin_manage_6789
-账号：username
-密码：admin
 ```
 
 > 上线前请务必在「账号设置」里修改密码，并在 `.env` 中更换 `APP_KEY` 与 `JWT_SECRET`。
