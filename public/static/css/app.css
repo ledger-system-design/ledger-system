@@ -1,0 +1,101 @@
+/* ==========================================================================
+   应用外壳补充样式
+   --------------------------------------------------------------------------
+   uni-framework.css = 参考站 H5 框架基础样式（uni-* 自定义元素）
+   component.css     = uView 组件样式（与参考站构建产物一致）
+   page.css           = 各页面作用域样式（.pg-* 前缀，避免同名类互相污染）
+   本文件只放 rpx 变量与少量外壳专用样式
+   ========================================================================== */
+
+:root {
+    /* uni-app H5 的 rpx 换算结果（由 JS 按窗口宽度写入）：
+       窗口宽度 <= 960px 时 1rpx = 窗口宽/750；超过 960px 时按 375px 设计宽度换算 */
+    --rpx: 0.5px;
+    /* uni-app 运行时写入的窗口变量（导航栏/tabbar 定位依赖它们） */
+    --window-left: 0px;
+    --window-right: 0px;
+    --window-top: 0px;
+    --window-bottom: 0px;
+    --window-margin: 0px;
+    --status-bar-height: 0px;
+}
+
+/* 页面切换淡入 */
+.page-fade-enter-active {
+    transition: opacity 0.2s ease;
+}
+
+.page-fade-enter {
+    opacity: 0;
+}
+
+/* 返回箭头：uni-btn-icon 使用 unibtn 字体 */
+.uni-page-head-btn .uni-btn-icon {
+    line-height: 1;
+}
+
+/* 会员端图片统一不可拖拽 */
+uni-image img,
+.u-image img {
+    -webkit-user-drag: none;
+    user-select: none;
+}
+
+/* 收款二维码预览 */
+.caidet .pay_qr {
+    width: 100%;
+    max-width: calc(460 * var(--rpx));
+}
+
+/* 页面容器高度：与 uni-app 一致，减去导航栏与 tabbar 高度 */
+uni-page-head[uni-page-head-type="default"] ~ uni-page-wrapper {
+    height: calc(100% - 44px - var(--window-bottom));
+}
+
+/* 页面主体最小高度（与 uni-app 一致，保证空内容也铺满一屏） */
+uni-page-body {
+    min-height: 100vh;
+}
+
+/* --------------------------------------------------------------------------
+   轮播：uni-app 用 uni-swiper 的 uni-swiper-slides 排布，本实现用 .u-swiper-track
+   横向 flex 轨道，需补上与参考站一致的尺寸链（否则高 0，图片不可见）
+   -------------------------------------------------------------------------- */
+.u-swiper-track {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    will-change: transform;
+}
+
+.u-swiper-track>.u-swiper-item {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   弹出层层级 + 隐藏状态下不拦截点击
+   --------------------------------------------------------------------------
+   参考站 uView 的层级关系是：
+     .u-mask          1001（半透明遮罩）
+     .u-drawer        1002（弹出层容器，必须高于遮罩）
+     .u-drawer-content 1003（侧滑面板本体）
+   本项目的 .u-drawer 没有 z-index，导致整个弹出层（含 .u-drawer-content）被
+   排在遮罩下面：面板被遮罩压暗、且点击落到遮罩上（表现为“层级不够”）。
+   这里显式补上，遮罩仍然高于页面内容，因此点遮罩空白处可关闭弹层。
+   -------------------------------------------------------------------------- */
+.u-drawer {
+    z-index: 1002;
+    pointer-events: none;
+}
+
+.u-drawer-content {
+    z-index: 1003;
+    pointer-events: auto;
+}
+
+.u-mask:not(.u-mask-show) {
+    pointer-events: none;
+}

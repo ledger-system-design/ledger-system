@@ -1,0 +1,5 @@
+# Laravel 前端控制器重写：把站点根目录指向 public/
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(?!public/)(.*)$ public/$1 [L]
+</IfModule>
